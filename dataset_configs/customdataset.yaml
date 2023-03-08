@@ -1,0 +1,30 @@
+datatype: knots
+num_targets: 2
+knottype: custom
+filename: custom_dataset # Need to add if already created
+fileloc: '/home/harshat/PycharmProjects/LieSP/Datasets/'
+num_features: 100
+num_samples: 200
+val_test_split:
+  - .30
+  - .50
+  - .20
+train_noise:
+  - 0 # mean
+  - 0 # std
+test_noise:
+  - 0 # mean
+  - 2 # std
+grid_config:
+  k: 4 # number of neighbors
+  sample_type: uniform
+  cuberootgran: 10 # grid will contain cuberootgran**3 points
+  x:
+    - -2
+    - 2
+  y:
+    - -2
+    - 2
+  z:
+    - -2
+    - 2

@@ -1,0 +1,51 @@
+Task Name: Random seed sweep
+config: 'trainingconfig.yaml'
+folder: SecondTune
+logging: Knot_Z
+Training Config Tune:
+  Randomseed:
+    - 1
+    - 2
+#    - 3
+#    - 4
+#    - 5
+#    - 6
+#    - 7
+#    - 8
+#    - 9
+#    - 10
+#  learningrate:
+#    - 0.01
+#    - 0.001
+#    - 0.05
+#  batchsize:
+#    - 16
+#    - 32
+#    - 64
+#    - 128
+  Model:
+#    - './model_configs/LieConvRot.yaml'
+#    - './model_configs/LieConvRotFilter2.yaml'
+#    - './model_configs/LieConvFilterv2.yaml'
+#    - './model_configs/LieConvFilterv2_2.yaml'
+    - './model_configs/LieModelPoint.yaml'
+    - './model_configs/LieModelPoint_2.yaml'
+#    - './model_configs/LieModelRot.yaml'
+#    - './model_configs/LieModelRot2.yaml'
+#    - './model_configs/ray_LieModelRot.yaml'
+#    - './model_configs/ray_LieModelRot_2.yaml'
+#    - './model_configs/FCNN.yaml'
+#    - './model_configs/FCNN_2.yaml'
+#    - './model_configs/FCNNRot.yaml'
+#    - './model_configs/FCNNRot_2.yaml'
+
+  Dataset:
+#    - './dataset_configs/point_circle.yaml'
+#    - './dataset_configs/point_uniform.yaml'
+#    - './dataset_configs/point_grid.yaml'
+#    - './dataset_configs/point_gaussian.yaml'
+#    - './dataset_configs/custom_circle.yaml'
+#    - './dataset_configs/custom_uniform.yaml'
+    - './dataset_configs/custom_grid.yaml'
+    - './dataset_configs/custom_gaussian.yaml'
+

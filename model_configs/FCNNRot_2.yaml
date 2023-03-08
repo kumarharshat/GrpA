@@ -1,0 +1,11 @@
+modeltype: regular2
+dropout: 0
+input:
+  - 784
+output:
+  - 10
+Saving:
+  save: False
+  save_loc: '/harshat/home/PycharmProjects/LieSP/models/'
+  name: debugregular
+

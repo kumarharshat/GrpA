@@ -1,0 +1,47 @@
+Task Name: Model Tunnig Task
+config: 'trainingconfig.yaml'
+modelconfig: 'LieModelRot.yaml'
+folder: modelTune1
+logging: TuneLog_filter
+Model Config Tune:
+#  dropout:
+#    - 0.01
+#    - 0.1
+#    - 0
+  contract_ratio:
+    - 10
+    - 10
+    - 10
+#    - 5
+  include_ray:
+#    - 2
+    - True
+    - False
+#    - 20
+#    - 30
+#    - 40
+  conv_prefilter:
+    - True
+    - False
+#    - 3
+#    - 4
+#    - 5
+#    - 6
+#    - 7
+#    - 8
+#    - 9
+#    - 10
+#  learningrate:
+#    - 0.01
+#    - 0.001
+#    - 0.0001
+#  Model:
+#    - './model_configs/LieConvRot.yaml'
+#    - './model_configs/LieModelRot.yaml'
+#    - './model_configs/FCNNRot.yaml'
+#  Dataset:
+#    - './dataset_configs/custom_circle.yaml'
+#    - './dataset_configs/custom_uniform.yaml'
+#    - './dataset_configs/custom_grid.yaml'
+#    - './dataset_configs/custom_gaussian.yaml'
+

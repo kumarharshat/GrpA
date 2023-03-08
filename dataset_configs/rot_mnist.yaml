@@ -1,0 +1,21 @@
+datatype: RotMNIST
+num_targets: 10
+knottype: RotMNIST
+filename: RotMNIST_debug
+fileloc: '/Datasets/'
+train_noise:
+  - 0 # mean
+  - 0 # std
+test_noise:
+  - 0 # mean
+  - 0 # std
+grid_config:
+  k: 4 # number of neighbors
+  sample_type: grid
+  cuberootgran: 28 # grid will contain cuberootgran**3 points
+  x:
+    - -14
+    - 14
+  y:
+    - -14
+    - 14

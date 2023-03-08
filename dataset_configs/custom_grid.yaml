@@ -1,0 +1,30 @@
+datatype: knots
+num_targets: 2
+knottype: custom
+filename: knot_grid_5_SO3 # Need to add if already created
+fileloc: '/Datasets/'
+num_features: 200
+num_samples: 400
+val_test_split:
+  - .30
+  - .35
+  - .35
+train_noise:
+  - 0 # mean
+  - 0.1 # std
+test_noise:
+  - 0 # mean
+  - 0.2 # std
+grid_config:
+  k: 4 # number of neighbors
+  sample_type: grid
+  cuberootgran: 5 # grid will contain cuberootgran**3 points
+  x:
+    - -2
+    - 2
+  y:
+    - -2
+    - 2
+  z:
+    - -2
+    - 2

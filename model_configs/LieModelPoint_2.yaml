@@ -1,0 +1,25 @@
+modeltype: lie1
+dropout: 0
+save: False # TODO: Add functinoality to save and load files
+# Input and output are determined by dataset
+granularity: 10 # angle for rotations
+taps: 3 # total is taps*2 - 1
+num_filters: 1
+expand_ratio: 1
+contract_ratio: 1
+linear_bottleneck: 10
+add_linear: True
+conv_prefilter: False
+output: 10
+Saving:
+  save: False
+  save_loc: '/harshat/home/PycharmProjects/LieSP/models/'
+  name: debuglie
+layers: 2
+
+
+
+
+
+
+

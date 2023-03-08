@@ -1,0 +1,35 @@
+modeltype: lieRot
+dropout: 0.00
+save: False # TODO: Add functinoality to save and load files
+# Input and output are determined by dataset
+granularity:
+  - 5 # angle for rotations
+#  - 5
+#  - 10
+taps:
+  - 10 # total is taps*2 - 1
+#  - 10
+#  - 1
+num_filters: 1
+raystart: 0.8
+rayend: 1.2
+raydensity: 3
+expand_ratio: 2
+contract_ratio: 1
+add_linear: True
+conv_prefilter: False
+include_ray: True
+output: 10
+linear_bottleneck: 10
+Saving:
+  save: False
+  save_loc: '/harshat/home/PycharmProjects/LieSP/models/'
+  name: debuglie
+layers: 1
+
+
+
+
+
+
+

@@ -1,0 +1,27 @@
+datatype: pointcloud
+num_targets: 10
+filename: point_uniform_5_SO3 # Need to add if already created
+fileloc: '/Datasets/'
+#val_test_split:
+#  - .30
+#  - .20
+#  - .50
+train_noise:
+  - 0 # mean
+  - 0 # std
+test_noise:
+  - 0 # mean
+  - 0 # std
+grid_config:
+  k: 4 # number of neighbors
+  sample_type: uniform
+  cuberootgran: 5 # grid will contain cuberootgran**3 points
+  x:
+    - -1
+    - 1
+  y:
+    - -1
+    - 1
+  z:
+    - -1
+    - 1
