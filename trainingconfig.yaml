@@ -12,4 +12,4 @@ Training:
     accuracyfreq: 10
   Randomseed: 100
   Model: './model_configs/LieModelPoint.yaml'
-  Dataset: './dataset_configs/point_grid.yaml'
+  Dataset: './dataset_configs/custom_circle.yaml'

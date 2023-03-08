@@ -1,11 +1,11 @@
-name: liesp2
+name: grpa
 channels:
   - pytorch
   - nvidia
   - defaults
   - numba
 dependencies:
-  - python==3.8.8
+  - python
   - numpy
   - nvidia::cudatoolkit>10.0
   - numba::llvmlite
