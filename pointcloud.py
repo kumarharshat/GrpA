@@ -11,6 +11,9 @@
 # import tqdm
 # from base_data_class import base_data_class, CustomDataset
 #
+#############################################
+## Uncomment to run code with ModelPoint10!##
+#############################################
 # class PointCloud(base_data_class):
 #     def __init__(self, config):
 #         super().__init__()
