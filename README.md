@@ -2,7 +2,9 @@
 Code to implement the Lie Group Algebra convolutional filters as given by [our paper](https://arxiv.org/pdf/2210.17425.pdf).
 
 ## Installation
+This code has been tested on torch version`1.13.1`, CUDA version`11.4` and Python version`3.8.8`. 
 
+### Installation with CUDA
 In your working folder, run 
 ```commandline
 $ git clone https://github.com/kumarharshat/GrpA.git
@@ -15,23 +17,21 @@ $ conda env create -f environment.yaml
 $ conda activate grpa
 ```
 
-We highly recommend using pytorch with CUDA enabled, as there are many computations which are very computationally expenseive on CPU only. 
-### CPU only 
-However, if CUDA is not available, please do the following changes to the `environment.yaml` file: 
+We highly recommend using pytorch with CUDA enabled, as there are many computations which can be computationally expensive on CPU only. 
+### Installation with CPU
+Please do the following changes to the `environment.yaml` file: 
 
 1) Remove `nvidia` from `channels`
 2) Change `nvidia::cudatoolkit>10.0` to to `cpuonly`
 
-Then copy the steps from `Installation`
+Then copy the steps from `Installation with CUDA`
 
 ### Additional Requirements for ModelPoint10
-In order to run the ModelPoint10 simulations, we need the additional commands after activating `grpa`
+In order to run the ModelPoint10 simulations, we need the additional commands after activating `grpa`. Note that these may take around a half hour.
 ```commandline
 $ pip install torch_geometric
 $ pip install torch_points3d
 ```
-Note that these take a while (around a half hour).
-This code has only been tested on torch version`1.13.1`, CUDA version`11.4` and Python version`3.8.8`. 
 
 
 ## Dataset requirements
