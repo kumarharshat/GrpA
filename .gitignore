@@ -1,0 +1,5 @@
+.idea/
+Datasets/*
+__pycache__/*
+data/*
+simulations/*
