@@ -54,8 +54,11 @@ if __name__ == '__main__':
         print(params, vals_)
 
         for param_, val_ in zip(params, vals_):
-            modelconfig[param_] = val_
-            sim_[param_] = val_
+            if param_ in ['Randomseed']:
+                tconfig[param_] = val_
+            else:
+                modelconfig[param_] = val_
+                sim_[param_] = val_
         tconfig['Training']['Saving']['filename'] =filename_base+ '_' + str(sim_num)
         History = run_simulation(tconfig, modelconfig, seed = sim_num)
         print('Training Acc', History['training_accuracy'][-1], 'Val Acc', History['validation_accuracy'][-1], 'Test', History['test_accuracy'][-1])

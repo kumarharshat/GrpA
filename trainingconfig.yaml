@@ -1,6 +1,6 @@
 Training:
   iterations: 100
-  debug: True
+  debug: False
   learningrate: 0.001
   optimizer: ADAM
   weightdecay: 0.00
@@ -9,7 +9,7 @@ Training:
     savehistory: True
     filename: debug2
     subfolder: dateTime # dateTime
-    accuracyfreq: 10
+    accuracyfreq: 1
   Randomseed: 100
   Model: './model_configs/LieModelPoint.yaml'
   Dataset: './dataset_configs/custom_circle.yaml'

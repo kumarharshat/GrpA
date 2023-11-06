@@ -29,7 +29,7 @@ class LieSPmain(nn.Module):
     # Whether or not we want to prefilter with a CNN.. Only for 2d images
     self.conv1 = None
 
-  def forward(self, x):
+  def forward(self, x, add_noise = False):
     if self.conv1 is not None: # apply prefilter convolution if it's there
       x = x.reshape(x.shape[0], 28,28)
       x = self.conv1(x.unsqueeze(1))
@@ -38,11 +38,15 @@ class LieSPmain(nn.Module):
     else:
       x = x.unsqueeze(dim = -1).tile([1,1,self.config['num_filters']]) # otherwise expand input by number of filters
     for layer_ in self.layers: # Apply each layer
-      x = layer_(x)
-
+      x = layer_(x,add_noise = add_noise)
     x = torch.max(x,axis = -1)[0]
     x = self.l1(self.dropout(x)) # Final linear layer
     return x
+
+# def add_epsilon_noise(sparse_coo_tensor, epsilon = 0.01):
+#   dense_tensor = sparse_coo_tensor.to_dense()
+#   dense_tensor += torch.from_numpy(np.diag(np.random.rand(dense_tensor.shape[0])*epsilon))
+#   return dense_tensor.to_sparse_coo()
 
 
 # FOR SO(3) transformations
@@ -102,6 +106,7 @@ class LieModel_SO3(LieSPmain):
 
           val, x, y = self.createR_sparse_bary(flat1, R_theta)
           m_tensor_theta = torch.sparse_coo_tensor(np.array([x, y]), val, size=(shape1, shape1))
+          # m_tensor_theta = add_epsilon_noise(m_tensor_theta)
           val, x, y = self.createR_sparse_bary(flat1, R_phi)
           m_tensor_phi = torch.sparse_coo_tensor(np.array([x, y]), val, size=(shape1, shape1))
           val, x, y = self.createR_sparse_bary(flat1, R_z)
@@ -315,6 +320,7 @@ class LieLayer(nn.Module):
     self.generators_length = None
     self.inputsize = inputsize
     self.linear = None
+    self.epsilon = config['epsilon']
     self.expand_generators(generators)
     self.output = inputsize*config['expand_ratio']
     if config['add_linear']:
@@ -335,6 +341,7 @@ class LieLayer(nn.Module):
     n_params = np.math.factorial(len(generators))*len(generators[0])**len(generators)
     iter_order = itertools.permutations(np.arange(len(generators)))
     transform_full = torch.zeros(n_params, generators[0][0].shape[0], generators[0][0].shape[0])
+    transform_epsilon = torch.zeros(n_params, generators[0][0].shape[0], generators[0][0].shape[0])
     i = 0
     for order_ in iter_order:
       new_list = [generators[order_[idx_]] for idx_ in range(len(generators))]
@@ -347,11 +354,16 @@ class LieLayer(nn.Module):
             sparse_dummy = torch.sparse.mm(sparse_dummy, element[iter_elem])
             iter_elem += 1
         transform_full[i,:,:] = sparse_dummy.to_dense()
+        transform_epsilon[i,:,:] = transform_full[i,:,:] + torch.from_numpy(np.diag(np.random.rand(transform_full[i,:,:].shape[0])*self.epsilon))
         i+=1
 
     self.generators = transform_full
-  def forward(self, x, dataset = None):
-    x = ExpandFilterFunctionNew2(x, self.params, self.generators) # Apply the filter
+    self.epsilon_generators = transform_epsilon
+  def forward(self, x, dataset = None, add_noise = False):
+    if add_noise:
+      x = ExpandFilterFunctionNew2(x, self.params, self.epsilon_generators)  # Apply the filter
+    else:
+      x = ExpandFilterFunctionNew2(x, self.params, self.generators) # Apply the filter
     if self.linear is not None: #Apply linear layer if it exists
       x = self.linear(x)
     return self.activation(x) # apply nonlinearity

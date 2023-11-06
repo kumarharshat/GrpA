@@ -6,6 +6,7 @@ granularity: 10 # angle for rotations
 taps: 5 # total is taps*2 - 1
 num_filters: 1
 expand_ratio: 2
+epsilon: 0.01
 contract_ratio: 1
 linear_bottleneck: 10
 add_linear: True

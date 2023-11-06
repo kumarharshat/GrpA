@@ -33,6 +33,12 @@ class Solver():
         self.History['training_accuracy'] = []
         self.History['validation_accuracy'] = []
         self.History['test_accuracy'] = []
+        self.History['training_accuracy_ep'] = []
+        self.History['validation_accuracy_ep'] = []
+        self.History['test_accuracy_ep'] = []
+        self.History['test_epsilon'] = []
+        self.History['validation_epsilon'] = []
+        self.History['training_epsilon'] = []
         self.History['training_cm'] = []
         self.History['val_cm'] = []
         self.History['test_cm'] = []
@@ -48,7 +54,7 @@ class Solver():
         # self.scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(self.optimizer, T_max=200)
         # TODO: Add scheudler
 
-    def eval_accuracy(self, dset):
+    def eval_accuracy(self, dset, epsilon_eval = False):
         '''
 
         :param dset: which dataset are we evaluating
@@ -65,17 +71,61 @@ class Solver():
             x = batch_[0]
             y = batch_[1]
             self.optimizer.zero_grad()
-            yhat = self.model.forward(x.to(self.device)).argmax(dim =1).cpu()
+            if epsilon_eval:
+                yhat = self.model.forward(x.to(self.device), add_noise = True).argmax(dim=1).cpu()
+            else:
+                yhat = self.model.forward(x.to(self.device)).argmax(dim =1).cpu()
             num_correct += torch.sum(yhat == y)
         if dset == 'train':
-            self.History['training_accuracy'].append(num_correct / dataset.dataset.__len__())
+            if epsilon_eval:
+                self.History['training_accuracy_ep'].append(num_correct / dataset.dataset.__len__())
+            else:
+                self.History['training_accuracy'].append(num_correct / dataset.dataset.__len__())
         elif dset == 'val':
-            self.History['validation_accuracy'].append(num_correct / dataset.dataset.__len__())
+            if epsilon_eval:
+                self.History['validation_accuracy_ep'].append(num_correct / dataset.dataset.__len__())
+            else:
+                self.History['validation_accuracy'].append(num_correct / dataset.dataset.__len__())
         elif dset =='test':
-            self.History['test_accuracy'].append(num_correct / dataset.dataset.__len__())
+            if epsilon_eval:
+                self.History['test_accuracy_ep'].append(num_correct / dataset.dataset.__len__())
+            else:
+                self.History['test_accuracy'].append(num_correct / dataset.dataset.__len__())
         if self.verbose:
             print(dset, num_correct / dataset.dataset.__len__())
         return
+
+
+    def eval_epsilon(self, dset):
+        '''
+
+        :param dset: which dataset are we evaluating
+        :return: accuracy of self.model
+        '''
+        if dset =='train':
+            dataset = self.trainset
+        elif dset == 'val':
+            dataset = self.valset
+        elif dset =='test':
+            dataset = self.testset
+        norm_difference = 0
+        for batch_ in dataset:
+            x = batch_[0]
+            y = batch_[1]
+            self.optimizer.zero_grad()
+            yhat_epsilon = self.model.forward(x.to(self.device), add_noise = True)
+            yhat = self.model.forward(x.to(self.device), add_noise = False)
+            norm_difference += torch.norm(yhat - yhat_epsilon).item()
+        if dset == 'train':
+            self.History['training_epsilon'].append(norm_difference / dataset.dataset.__len__())
+        elif dset == 'val':
+            self.History['validation_epsilon'].append(norm_difference / dataset.dataset.__len__())
+        elif dset =='test':
+            self.History['test_epsilon'].append(norm_difference / dataset.dataset.__len__())
+        if self.verbose:
+            print(dset, norm_difference / dataset.dataset.__len__())
+        return
+
 
     def eval_cm(self, dset):
         '''
@@ -149,8 +199,16 @@ class Solver():
                 self.optimizer.step()
             self.History['training_accuracy'].append(num_correct / self.trainset.dataset.__len__())
             if iter % self.settings['Saving']['accuracyfreq'] == 0:
+                self.eval_accuracy('val', epsilon_eval=True)
+                self.eval_accuracy('test', epsilon_eval=True)
+                self.eval_accuracy('train', epsilon_eval=True)
                 self.eval_accuracy('val')
                 self.eval_accuracy('test')
+                # self.eval_accuracy('train')
+                self.eval_epsilon('val')
+                self.eval_epsilon('test')
+                self.eval_epsilon('train')
+
             iter += 1
 
         self.eval_cm('test')
